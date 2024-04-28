@@ -1,0 +1,110 @@
+﻿@page "/Home"
+@using Planner.Client.Services
+@using Planner.Domain.ViewModel
+@using Planner_Domain.Model
+@layout MudBlazorLayout
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.Charts.Chart.Internal
+@using ValueType = Syncfusion.Blazor.Charts.ValueType
+
+
+<div class="mud-height-full">
+    <MudStack Row="true" Class="size-dashboard pa-4">
+        <MudPaper Elevation="10" Height="100%" Width="70%">
+            <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <SfChart Width="100%" Height="100%">
+                    <ChartPrimaryXAxis ValueType="ValueType.Category"/>
+                    <ChartSeries DataSource="ChartAllTimeVm" XName="ToDoTitle" YName="CountDo" Type="ChartSeriesType.Column">
+                    </ChartSeries>
+                </SfChart>  
+
+            </MudStack>
+        </MudPaper>
+        <MudPaper Elevation="10" Height="100%" Width="30%">
+            <MudDataGrid T="Activity" Height="100%" Items="Activities" Breakpoint="Breakpoint.None" Dense="true" Virtualize="true" Elevation="0"
+                         Groupable="false" GroupExpanded="false" Filterable="false">
+                <ToolBarContent>
+                        <MudText Typo="Typo.body2" Color="Color.Primary">@DateTime.Today.ToShortDateString()</MudText>
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x=>x.ToDo.Title" Title="Title" Sortable="false" />
+                    <TemplateColumn Title="IsDo" Sortable="true">
+                        <CellTemplate>
+                            @if (context.Item.IsDo == true)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Success"></MudIcon>
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.Close" Color="Color.Warning"></MudIcon>
+                            }
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+    </MudStack>
+
+    <MudStack Row="true" Class="size-dashboard pa-4">
+        <MudPaper Elevation="10" Height="100%" Width="50%">
+            <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <SfChart Width="100%" Height="100%">
+                    <ChartPrimaryXAxis ValueType="ValueType.Category"/>
+                    <ChartSeries DataSource="ChartVms" XName="ToDoTitle" YName="CountDo" Type="ChartSeriesType.Column">
+                    </ChartSeries>
+                </SfChart>
+            </MudStack>
+        </MudPaper>
+        <MudPaper Elevation="10" Height="100%" Width="50%">
+            <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <SfChart Width="100%" Height="100%">
+                    <ChartPrimaryXAxis ValueType="ValueType.Category"/>
+                    <ChartSeries DataSource="ChartNotDoVm" XName="ToDoTitle" YName="CountDo" Type="ChartSeriesType.Column">
+                    </ChartSeries>
+                </SfChart>            </MudStack>
+        </MudPaper>
+    </MudStack>
+</div>
+<style>
+
+    .size-dashboard {
+        height: 50% !important;
+    }
+
+    .mud-table-toolbar{
+        justify-content:center;
+    }
+</style>
+
+
+@code
+{
+    [Inject] private ActivityServices _activityServices { get; set; }
+
+    private List<Activity> Activities { get; set; } = new();
+    private List<ChartVM> ChartVms { get; set; } = new();
+    private List<ChartVM> ChartNotDoVm { get; set; } = new();
+    private List<ChartVM> ChartAllTimeVm { get; set; } = new();
+
+
+
+    protected override async void OnInitialized()
+    {
+
+        var user = await _localStorageService.GetItemAsync<User>("User");
+        if (user != null)
+        {
+            Activities = await _activityServices.DayActivity(user.Id);
+            ChartVms = await _activityServices.MountActivity(user.Id);
+            ChartNotDoVm = await _activityServices.MountNotActivity(user.Id);
+            ChartAllTimeVm = await _activityServices.AllTimeActivity(user.Id);
+
+        }
+        else
+        {
+            _snackbar.Add("User Does Not Exist");
+        }
+        StateHasChanged();
+    }
+
+}

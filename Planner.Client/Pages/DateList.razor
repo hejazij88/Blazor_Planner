@@ -1,0 +1,33 @@
+﻿@page "/DateList"
+@using Planner.Domain.Model
+
+
+@layout MudBlazorLayout
+
+
+<div class="mud-height-full pa-4">
+    <MudPaper Elevation="10" Width="100%">
+        <MudDataGrid T="DatePlan" Height="85vh" Items="DatePlans" Breakpoint="Breakpoint.None" Dense="true" QuickFilter="QuickFilter" Virtualize="true" RowClick="OnRowClick" RowClassFunc="SelectStyle" Elevation="0"
+                     Groupable="false" GroupExpanded="false" Filterable="false">
+            <ToolBarContent>
+                <MudStack Row="true" Class="mud-width-full" Justify="Justify.SpaceBetween">
+                    <MudTextField @bind-Value="SearchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                                  AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" IconSize="Size.Medium" Class="search-bar" />
+                    <MudStack Row="true" Spacing="0" Style="transform: translateY(12px);">
+                        <MudIconButton Disabled="!IsSelectedCategory" Icon="@Icons.Material.Outlined.Edit" OnClick="EditDatePlan" Color="Color.Warning" />
+                        <MudIconButton Class="add-btn" Icon="@Icons.Material.Outlined.Add" OnClick="AddDatePlan" Color="Color.Success" />
+                        <MudIconButton Disabled="!IsSelectedCategory" Icon="@Icons.Material.Outlined.Delete" OnClick="DeleteDatePlan" Color="Color.Error" />
+                    </MudStack> 
+
+                </MudStack>
+            </ToolBarContent>
+            <Columns>
+                <PropertyColumn Property="x=>x.DateTime" Format="dd.MM.yyyy" Title="Date" Sortable="false" />
+                <PropertyColumn Property="x=>x.Title" Title="Title" Sortable="false" />
+
+            </Columns>
+        </MudDataGrid>
+    </MudPaper>
+</div>
+
+

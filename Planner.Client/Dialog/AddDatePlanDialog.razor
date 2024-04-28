@@ -1,0 +1,77 @@
+﻿@using Planner.Domain.Model
+@using Planner.Client.Services
+@using Planner_Domain.Model
+
+
+<MudOverlay @bind-Visible="isVisible" ZIndex="9999" DarkBackground="true" AutoClose="false" OnClick="() => { }">
+    <MudProgressCircular Class="ms-n1" Size="Size.Medium" Indeterminate="true" />
+</MudOverlay>
+<MudDialog Style="Width:350px">
+    <DialogContent>
+        <MudForm Model="DatePlan" @ref="@form" Validation="@(DatePlanValidation.ValidateValue)" ValidationDelay="0">
+            <MudStack Spacing="1" Class="pl-4 pr-4 justify-center pa-0">
+
+                <MudTextField T="string" @bind-Value="DatePlan.Title" For="@(() => DatePlan.Title)" Immediate="true" Label="Title" />
+                <MudDatePicker @bind-Date="DatePlan.DateTime" For="@(() => DatePlan.DateTime)" Label="Date" />
+
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudStack Row="true" Class="mud-width-full mt-5" Justify="Justify.SpaceAround">
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Error" DisableElevation="true" @onclick="Cancel">Cancel</MudButton>
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Tertiary" DisableElevation="true" @onclick="Save">
+                Save
+            </MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Inject] private DatePlanServices DatePlanServices { get; set; }
+
+    [Parameter] public DatePlan DatePlan { get; set; } = new();
+
+    private DatePlanValidation DatePlanValidation { get; set; } = new();
+
+    public bool isVisible { get; set; } = new();
+
+    private MudForm form;
+
+
+    private async Task Save()
+    {
+        await form.Validate();
+
+        if (form.IsValid)
+        {
+            isVisible = true;
+            var user =await _localStorageService.GetItemAsync<User>("User");
+            if (user == null)
+            {
+                _snackbar.Add("Does Not Exist User",Severity.Error);
+            }
+            else
+            {
+
+                DatePlan.User = user;
+                DatePlan.UserId = user.Id;
+
+                var result = await DatePlanServices.UpdateDatePlan(DatePlan);
+
+                isVisible = false;
+                if (result != null)
+                {
+                    isVisible = true;
+                    MudDialog.Close(DialogResult.Ok(result));
+                }
+            }
+        }
+    }
+
+    private void Cancel() => MudDialog.Close(DialogResult.Cancel());
+}

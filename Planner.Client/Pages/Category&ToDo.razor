@@ -1,0 +1,90 @@
+﻿@page "/Categort&ToDo"
+@layout MudBlazorLayout
+@using Planner_Domain.Model
+
+
+<div class="mud-height-full pa-4">
+    <MudStack Class="mud-height-full" Row="true">
+        <MudPaper Elevation="10" Width="50%">
+            <MudDataGrid T="Category" Height="85vh" Items="Categories" Breakpoint="Breakpoint.None" Dense="true" QuickFilter="QuickFilter" Virtualize="true" RowClick="OnRowClickCategory" RowClassFunc="SelectCategoryStyle" Elevation="0"
+                         Groupable="false" GroupExpanded="false" Filterable="false">
+                <ToolBarContent>
+                    <MudStack Row="true" Class="mud-width-full" Justify="Justify.SpaceBetween">
+                        <MudTextField @bind-Value="SearchStringCategory" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                                      AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" IconSize="Size.Medium" Class="search-bar" />
+                        <MudStack Row="true" Spacing="0" Style="transform: translateY(12px);">
+                                  <MudIconButton Disabled="!IsSelectedCategory" Icon="@Icons.Material.Outlined.Edit" OnClick="EditCategory" Color="Color.Warning" />
+                            <MudIconButton Class="add-btn" Icon="@Icons.Material.Outlined.Add" OnClick="AddCategory" Color="Color.Success" />
+                                  <MudIconButton Disabled="!IsSelectedCategory" Icon="@Icons.Material.Outlined.Delete" OnClick="DeleteCategory" Color="Color.Error" />
+
+                        </MudStack> 
+
+                    </MudStack>
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x=>x.Title" Title="Category" Sortable="false" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+
+        <MudPaper Elevation="10" Width="50%">
+            <MudDataGrid Height="85vh" Filterable="false" Groupable="false" T="ToDo" Items="ToDoS" Breakpoint="Breakpoint.None" Elevation="0" Dense="true" QuickFilter="QuickFilterToDo" RowClick="OnRowClickToDo" RowClassFunc="SelectToDoStyle" Virtualize="false">
+                <ToolBarContent>
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mud-width-full">
+
+                        <MudTextField @bind-Value="SearchStringToDo" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                                      AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" IconSize="Size.Medium" Class="search-bar" />
+
+                          <MudStack Row="true" Spacing="0" Style="transform: translateY(12px);">
+                        <MudIconButton Disabled="!IsSelectedToDo" Icon="@Icons.Material.Outlined.Edit" OnClick="EditToDo" Color="Color.Warning" />
+                        <MudIconButton Disabled="!IsSelectedCategory" Class="add-btn" Icon="@Icons.Material.Outlined.Add" OnClick="AddToDo" Color="Color.Success" />
+                        <MudIconButton Disabled="!IsSelectedToDo" Icon="@Icons.Material.Outlined.Delete" OnClick="DeleteToDo" Color="Color.Error" />
+
+                          </MudStack> 
+
+                    </MudStack>
+
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x => x.Title" Title="ToDo" Sortable="false" />
+                </Columns>
+            </MudDataGrid>
+        </MudPaper>
+    </MudStack>
+</div>
+
+                        
+                        
+<style>
+     .mud-table {
+        height: 100%;
+    }
+
+     .mud-table-container::-webkit-scrollbar {
+        width: 5px;
+    }
+
+     .mud-table-container::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+    }
+
+    .add-btn svg {
+        font-size: 30px;
+    }
+
+    .search-bar {
+        max-width: 350px;
+    }
+
+     .mud-table-pagination {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+     .active-Category,
+     .active-ToDo {
+         font-style: italic;
+         background-color: #65666d !important;
+     }
+
+</style>

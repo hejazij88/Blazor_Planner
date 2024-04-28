@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Planner_Domain.Model
+
+<MudOverlay @bind-Visible="isVisible" ZIndex="9999" DarkBackground="true" AutoClose="false" OnClick="() => { }">
+    <MudProgressCircular Class="ms-n1" Size="Size.Medium" Indeterminate="true" />
+</MudOverlay>
+<MudDialog Style="Width:350px">
+    <DialogContent>
+        <MudForm Model="ActivityList" @ref="@form" ValidationDelay="0">
+            <MudStack AlignItems="AlignItems.Center">
+                <MudIconButton OnClick="AddAutoCumplite" Variant="Variant.Outlined" Size="Size.Small" ButtonType="ButtonType.Button" Color="Color.Success" Icon="@Icons.Material.Sharp.Add">Add Activity</MudIconButton>
+            </MudStack>
+            @foreach (var activ in ActivityList)
+            {
+                <MudStack Spacing="1" Justify="Justify.Center" Row="true">
+                    <MudAutocomplete Margin="Margin.Dense" ReadOnly="@(activ.ToDoId != Guid.Empty)" @bind-Value="activ.ToDo" Required="true" T="ToDo" Clearable="true" Variant="Variant.Outlined" Label="ToDo" FullWidth="true"
+                                     For="@(() => activ.ToDo)" ToStringFunc="todo => todo?.Title" SearchFunc="SearchToDo" />
+                    <MudCheckBox Color="Color.Primary" @bind-Checked="activ.IsDo" Label="Do ?" />
+                    <MudIconButton Icon="@Icons.Material.Filled.Minimize" Color="Color.Error" OnClick="()=>RemovePlan(activ)"></MudIconButton>
+                </MudStack>
+            }
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudStack Row="true" Class="mud-width-full mt-5" Justify="Justify.SpaceAround">
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Error" DisableElevation="true" @onclick="Cancel">Cancel</MudButton>
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Tertiary" DisableElevation="true" @onclick="Save">
+                Save
+            </MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>

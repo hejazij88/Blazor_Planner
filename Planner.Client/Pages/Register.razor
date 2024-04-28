@@ -1,0 +1,33 @@
+﻿@page "/Register"
+@layout MainLayout
+
+<div>
+    <MudMainContent Class="pa-0">
+        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Class="mud-height-full">
+            <MudPaper Width="400px" Height="82vh" Elevation="10">
+                <MudForm Model="user" @ref="_form" Validation="Validation.ValidateValue" ValidationDelay="0" Class="mud-height-full">
+                    <MudStack Class="pl-4 pr-4 my-auto mud-height-full">
+                        <MudStack Class="justify-center" Style="height:20%">
+                            <MudText Align="Align.Center" Typo="Typo.h4">Register</MudText>
+                        </MudStack>
+                        <MudStack Spacing="8">
+                            <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="user.UserName" For="@(() => user.UserName)" Immediate="true" Label="Username" />
+
+                            <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="user.Password" For="@(() => user.Password)" Immediate="true" InputType="InputType.Password" Label="Password" />
+                                
+                            <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="user.Respassword" For="@(() => user.Respassword)" Immediate="true" InputType="InputType.Password" Label="RePassword" />
+
+                            <MudStack AlignItems="AlignItems.Center">
+                                <MudLink Href="/">Log In</MudLink>
+                            </MudStack>
+
+                        </MudStack>
+
+                        <MudButton Style="Width:80%" OnClick="RegisterUser" StartIcon="@Icons.Material.Filled.Login" Variant="Variant.Filled" Class="mx-auto mt-10 rounded-pill" Color="Color.Primary">Register</MudButton>
+                    </MudStack>
+                </MudForm>
+            </MudPaper>
+        </MudStack>
+    </MudMainContent>
+</div>
+

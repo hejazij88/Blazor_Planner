@@ -1,0 +1,12 @@
+﻿::deep .mud-layout {
+    height: 100vh !important;
+}
+
+::deep .mud-input-helper-text {
+    position: absolute;
+    padding-top: 3px;
+}
+
+::deep .mud-input-control-helper-container {
+    margin-top: 0 !important;
+}

@@ -1,0 +1,25 @@
+﻿
+
+<MudOverlay @bind-Visible="isVisible" ZIndex="9999" DarkBackground="true" AutoClose="false" OnClick="() => { }">
+    <MudProgressCircular Class="ms-n1" Size="Size.Medium" Indeterminate="true" />
+</MudOverlay>
+<MudDialog Style="Width:350px">
+    <DialogContent>
+        <MudForm Model="Category" @ref="@form" Validation="@(CategoryValidation.ValidateValue)" ValidationDelay="0">
+            <MudStack Spacing="1" Class="pl-4 pr-4 justify-center pa-0">
+
+                <MudTextField T="string" @bind-Value="Category.Title" For="@(() => Category.Title)" Immediate="true" Label="Title" />
+
+            </MudStack>
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudStack Row="true" Class="mud-width-full mt-5" Justify="Justify.SpaceAround">
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Error" DisableElevation="true" @onclick="Cancel">Cancel</MudButton>
+            <MudButton Style="Width:40%" Variant="Variant.Outlined" Class="mx-auto rounded-pill" Color="Color.Tertiary" DisableElevation="true" @onclick="Save">
+                Save
+            </MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>

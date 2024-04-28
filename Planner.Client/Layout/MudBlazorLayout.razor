@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+@layout MainLayout
+
+
+<div>
+    <MudAppBar Fixed="true" Dense="true" Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        <MudSpacer />
+        <MudLink Href="/Home">
+            <MudImage Src="logo-no-background.png" Style="Width:240px; padding-top: -25px;"></MudImage>
+        </MudLink>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="@open" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Admin Dashboard</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Href="/Categort&ToDo" Icon="@Icons.Material.Filled.Category" Match="NavLinkMatch.All">Categort & ToDo</MudNavLink>
+            <MudNavLink Href="/DateList" Icon="@Icons.Material.Filled.DateRange" Match="NavLinkMatch.All">Date Plan List</MudNavLink>
+        @*<MudNavLink Href="/SupplierManager" Icon="@Icons.Material.Filled.Man4" Match="NavLinkMatch.All">Supplier</MudNavLink>
+        <MudNavLink Href="/CurrencyManager" Icon="@Icons.Material.Filled.AttachMoney" Match="NavLinkMatch.All">Currency</MudNavLink>
+        <MudNavLink Href="/CategoryManager" Icon="@Icons.Material.Filled.Category" Match="NavLinkMatch.All">Group Category</MudNavLink> *@
+            <MudSpacer />
+        </MudNavMenu>
+    </MudDrawer>
+    
+
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+
+</div>   
+        @code
+        {
+            private bool open = true;
+
+            void ToggleDrawer() => open = !open;
+        }
